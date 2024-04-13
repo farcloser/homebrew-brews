@@ -1,12 +1,12 @@
 class Mumbrew < Formula
-  desc "Auto-updater for homebrew with notifications"
+  desc "Simplistic auto-updater for homebrew"
   homepage "https://github.com/farcloser/mumbrew"
   url "https://github.com/farcloser/mumbrew.git",
     revision: "b988720260e8e640d17e125d500d72d3af0ca3d1"
   version "dev"
   head "https://github.com/farcloser/mumbrew.git", branch: "master"
 
-  depends_on "terminal-notifier"
+  depends_on "farcloser/brews/terminal-notifier"
 
   def install
     bin.install "mumbrew"
