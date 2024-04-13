@@ -1,5 +1,5 @@
 class Mumbrew < Formula
-  desc "Simplistic auto-updater for homebrew"
+  desc "Farcloser: Simplistic auto-updater for homebrew"
   homepage "https://github.com/farcloser/mumbrew"
   url "https://github.com/farcloser/mumbrew.git",
     revision: "b988720260e8e640d17e125d500d72d3af0ca3d1"
