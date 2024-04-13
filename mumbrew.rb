@@ -4,7 +4,7 @@ class Mumbrew < Formula
   url "https://github.com/farcloser/mumbrew.git",
     revision: "b988720260e8e640d17e125d500d72d3af0ca3d1"
   version "dev"
-  head "https://github.com/farcloser/mumbrew.git", branch: "master"
+  head "https://github.com/farcloser/mumbrew.git", branch: "main"
 
   depends_on "farcloser/brews/terminal-notifier"
 
