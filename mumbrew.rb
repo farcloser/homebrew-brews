@@ -2,9 +2,8 @@ class Mumbrew < Formula
   desc "Farcloser: Simplistic auto-updater for homebrew"
   homepage "https://github.com/farcloser/mumbrew"
   url "https://github.com/farcloser/mumbrew.git",
-    revision: "b988720260e8e640d17e125d500d72d3af0ca3d1"
+      branch: "main"
   version "dev"
-  head "https://github.com/farcloser/mumbrew.git", branch: "main"
 
   depends_on "farcloser/brews/terminal-notifier"
 

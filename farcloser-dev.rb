@@ -2,9 +2,8 @@ class FarcloserDev < Formula
   desc "Farcloser: Top-level brew for developers laptops"
   homepage "https://github.com/farcloser/homebrew-brews"
   url "https://github.com/farcloser/homebrew-brews.git",
-    revision: "f3f4eb656c97f9b4f30ee6d118b58520225c3369"
+    branch: "main"
   version "dev"
-  head "https://github.com/farcloser/homebrew-brews.git", branch: "main"
 
   depends_on "farcloser/brews/mumbrew"
   depends_on "farcloser/brews/openssh"
@@ -13,6 +12,6 @@ class FarcloserDev < Formula
   depends_on :macos
 
   def install
-    system "echo", "installed"
+    doc.install "README.md"
   end
 end

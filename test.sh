@@ -54,17 +54,21 @@ lint::shell ./*.sh
 logger::info "Linting successful"
 
 # Force clean leftovers
-brew untap farcloser/test 2>/dev/null || true
-
-brew tap-new farcloser/test --no-git >/dev/null 2>&1
+brew untap farcloser/test >/dev/null 2>&1 || true
+# Install fake test tap
+brew tap-new farcloser/test --no-git >/dev/null 2>&1 || true
+logger::info "Auditing formulas"
 ex=
+# XXX might be necessary to sed farcloser/brews -> farcloser/test so that dependency resolution works when new one
+# are introduced
 cp -p ./*.rb "$(brew --repository)"/Library/Taps/farcloser/homebrew-test/Formula
 for file in "$(brew --repository)"/Library/Taps/farcloser/homebrew-test/Formula/*.rb; do
-  brew audit --formula "farcloser/test/$(basename "${file%.rb}")" || {
+  logger::info " > $(basename "${file%.rb}")"
+  brew audit --verbose --formula "farcloser/test/$(basename "${file%.rb}")" || {
     logger::error "Audit failed for file $file"
     ex=42
   }
 done
-brew untap farcloser/test 2>/dev/null
+brew untap farcloser/test >/dev/null 2>&1 || true
 
 [ ! "$ex" ] || exit "$ex"
