@@ -12,16 +12,6 @@ class Openssh < Formula
     regex(/href=.*?openssh[._-]v?(\d+(?:\.\d+)+(?:p\d+)?)\.t/i)
   end
 
-  bottle do
-    sha256 arm64_sonoma:   "447bfbf4b1c31720c1bad753cf207f234b52cb1fea5b0a474708a6251e82dff2"
-    sha256 arm64_ventura:  "74ad631d8504351d31259ac7aae694a81097b04739f9a2f1e6a28e42ca60834b"
-    sha256 arm64_monterey: "ba7b58021803bdecef4c8ac9ed33e6f8c3788c47ee00548bbab4bb0a937c8ef9"
-    sha256 sonoma:         "87eedfb466961ad64757901871958b25eb15090aa3b261142bdf21250c6905d8"
-    sha256 ventura:        "379cdb985a280265a8451180838044c8fca07e02c2972ab9da846a602288082c"
-    sha256 monterey:       "119e9396d914c59f94eabab53fb66bdc5f0d180da000c77ee3deddb269fae94c"
-    sha256 x86_64_linux:   "df5724bab105958f71a2ff1d880785d14940bceb7e8da6a6655b55bc64c05ebb"
-  end
-
   # Please don't resubmit the keychain patch option. It will never be accepted.
   # https://archive.is/hSB6d#10%25
 
@@ -89,6 +79,46 @@ class Openssh < Formula
     system "./configure", *args
     system "make"
     ENV.deparallelize
+    rm "ssh_config"
+    touch "ssh_config"
+    inreplace "ssh_config", "", "
+Host *
+  # TODO: challenge these
+  Compression no
+  ForwardAgent no
+  Tunnel no
+
+  AddressFamily any
+  BatchMode no
+  CheckHostIP yes
+  ConnectionAttempts 1
+  ConnectTimeout 5
+  EscapeChar ~
+  FingerprintHash sha256
+  ForwardX11 no
+  ForwardX11Trusted no
+  GatewayPorts no
+  GSSAPIAuthentication no
+  GSSAPIAuthentication no
+  GSSAPIDelegateCredentials no
+  HashKnownHosts yes
+  HostbasedAuthentication no
+  KbdInteractiveAuthentication no
+  PasswordAuthentication no
+  PermitLocalCommand no
+  Port 22
+  PubkeyAuthentication yes
+  StrictHostKeyChecking ask
+  IdentityFile ~/.ssh/id_ed25519
+  IdentityFile ~/.ssh/id_ed25519_sk
+  CASignatureAlgorithms sk-ssh-ed25519@openssh.com,ssh-ed25519
+  HostKeyAlgorithms ssh-ed25519-cert-v01@openssh.com,sk-ssh-ed25519-cert-v01@openssh.com,ssh-ed25519,sk-ssh-ed25519@openssh.com
+  PubkeyAcceptedAlgorithms ssh-ed25519-cert-v01@openssh.com,sk-ssh-ed25519-cert-v01@openssh.com,ssh-ed25519,sk-ssh-ed25519@openssh.com
+  KexAlgorithms curve25519-sha256,sntrup761x25519-sha512@openssh.com
+  Ciphers aes256-ctr
+  MACs hmac-sha2-512-etm@openssh.com
+  HostbasedAcceptedAlgorithms ssh-ed25519-cert-v01@openssh.com,sk-ssh-ed25519-cert-v01@openssh.com,ssh-ed25519,sk-ssh-ed25519@openssh.com
+"
     system "make", "install"
 
     # This was removed by upstream with very little announcement and has

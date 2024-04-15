@@ -35,9 +35,10 @@ logger::error(){
 net::download(){
   local url="$1"
   local destination="${2:-/dev/stdout}"
+  local no_cache="${3:-}"
   local args=(--tlsv1.2 -sSfL --proto "=https" --http2-prior-knowledge)
   # shellcheck disable=SC2015
-  [ "$destination" != /dev/stdout ] && [ -e "$destination" ] && {
+  [ "$destination" != /dev/stdout ] && [ -e "$destination" ] && [ ! "$no_cache" ] && {
     logger::info "%s is already there. Nothing to do.\n" "$destination"
   } || {
     printf >&2 "Downloading %s\n" "$url"
@@ -49,24 +50,21 @@ net::download(){
   }
 }
 
-net::download https://raw.githubusercontent.com/Homebrew/homebrew-core/master/Formula/o/openssh.rb ./openssh_origin.rb
-net::download https://raw.githubusercontent.com/Homebrew/homebrew-core/master/Formula/t/terminal-notifier.rb ./terminal-notifier_origin.rb
+mkdir -p _tmp
 
-# Not on bottles - homebrew creative vocabulary and corresponding documentation is really hard to make sense out of.
-# Folks? What about using plain english software? WTF does any_skip_relocation could possibly mean?
-grep -v 'depends_on "openssl' ./openssh_origin.rb | \
-  grep -v 'uses_from_macos "krb5"' | \
-  grep -v 'with-kerberos5' | \
-  grep -v ' cellar: :any_skip_relocation,' | \
-  sed -E 's|--with-ssl-dir=.+|--without-openssl|' |
-  sed -E 's|desc "(.*)|desc "Farcloser: \1|' > ./openssh.rb
+net::download https://raw.githubusercontent.com/Homebrew/homebrew-core/master/Formula/o/openssh.rb ./_tmp/openssh.rb no_cache
+net::download https://raw.githubusercontent.com/Homebrew/homebrew-core/master/Formula/t/terminal-notifier.rb ./_tmp/terminal-notifier.rb no_cache
+chmod a+r ./_tmp/*.rb
+cp ./_tmp/*.rb .
 
-# shellcheck disable=SC2002
-cat ./terminal-notifier_origin.rb | \
-  sed -E 's|desc "(.*)|desc "Farcloser: \1|' > ./terminal-notifier.rb
+# Note on bottles - homebrew creative vocabulary and corresponding documentation is really hard to make any sense out of.
+#
+# "A value of :any or :any_skip_relocation means that the bottle can be safely installed in any Cellar as it did not
+# contain any references to the Cellar in which it was originally built"
+#
+# Seriously? Like - SERIOUSLY? ^^^
 
-chmod a+r ./openssh.rb
-rm -f ./openssh_origin.rb
+patch < openssh.rb.patch
+patch < terminal-notifier.rb.patch
 
-chmod a+r ./terminal-notifier.rb
-rm -f ./terminal-notifier_origin.rb
+# diff --unified _tmp/openssh.rb openssh.rb > openssh.rb.patch
