@@ -20,8 +20,8 @@ class Mumbrew < Formula
     # interval 86400
     working_dir HOMEBREW_PREFIX
 
-    log_path var/"log/mumbrew.err.log"
-    error_log_path var/"log/mumbrew.out.log"
+    log_path var/"log/farcloser.mumbrew.err.log"
+    error_log_path var/"log/farcloser.mumbrew.out.log"
   end
 
   test do

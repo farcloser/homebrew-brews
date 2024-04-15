@@ -11,9 +11,15 @@ class SshAgent < Formula
     bin.install "farcloser-ssh-agent"
   end
 
+  # See /System/Library/LaunchAgents/com.openssh.ssh-agent.plist
   service do
-    run macos: [opt_bin/"farcloser-ssh-agent", opt_bin/"ssh-agent"]
+    run macos: [opt_bin/"farcloser-ssh-agent", HOMEBREW_PREFIX/"bin/ssh-agent"]
     run_type :immediate
     keep_alive true
+
+    working_dir HOMEBREW_PREFIX
+
+    log_path var/"log/farcloser.ssh-agent.err.log"
+    error_log_path var/"log/farcloser.ssh-agent.out.log"
   end
 end
