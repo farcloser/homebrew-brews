@@ -92,15 +92,12 @@ Host *
   BatchMode no
   CheckHostIP yes
   ConnectionAttempts 1
-  ConnectTimeout 5
+  ConnectTimeout 20
   EscapeChar ~
   FingerprintHash sha256
   ForwardX11 no
   ForwardX11Trusted no
   GatewayPorts no
-  GSSAPIAuthentication no
-  GSSAPIAuthentication no
-  GSSAPIDelegateCredentials no
   HashKnownHosts yes
   HostbasedAuthentication no
   KbdInteractiveAuthentication no
@@ -119,6 +116,62 @@ Host *
   MACs hmac-sha2-512-etm@openssh.com
   HostbasedAcceptedAlgorithms ssh-ed25519-cert-v01@openssh.com,sk-ssh-ed25519-cert-v01@openssh.com,ssh-ed25519,sk-ssh-ed25519@openssh.com
 "
+
+    rm "sshd_config"
+    touch "sshd_config"
+    inreplace "sshd_config", "", "
+AcceptEnv LANG LC_*
+AddressFamily any
+AllowAgentForwarding no
+AllowTcpForwarding no
+ClientAliveInterval 300
+ClientAliveCountMax 3
+Port 22
+RekeyLimit 1G 3600
+AuthorizedKeysFile	.ssh/authorized_keys
+KbdInteractiveAuthentication no
+ChallengeResponseAuthentication no
+GatewayPorts no
+HostbasedAuthentication no
+IgnoreRhosts yes
+IgnoreUserKnownHosts yes
+ListenAddress 0.0.0.0
+ListenAddress ::
+LoginGraceTime 30s
+LogLevel INFO
+MaxAuthTries 1
+MaxSessions 10
+MaxStartups 3:100:4
+PasswordAuthentication no
+PermitEmptyPasswords no
+PermitRootLogin no
+PermitTunnel no
+PermitUserEnvironment no
+PrintLastLog no
+PrintMotd no
+Protocol 2
+PubkeyAuthentication yes
+AuthorizedKeysCommand none
+AuthorizedKeysCommandUser nobody
+StrictModes yes
+SyslogFacility AUTH
+TCPKeepAlive no
+UseDNS no
+UsePAM yes
+X11Forwarding no
+X11UseLocalhost yes
+PermitTTY yes
+VersionAddendum Apollo/1.0
+# Crypto
+CASignatureAlgorithms sk-ssh-ed25519@openssh.com,ssh-ed25519
+HostKeyAlgorithms ssh-ed25519-cert-v01@openssh.com,sk-ssh-ed25519-cert-v01@openssh.com,ssh-ed25519,sk-ssh-ed25519@openssh.com
+PubkeyAcceptedAlgorithms ssh-ed25519-cert-v01@openssh.com,sk-ssh-ed25519-cert-v01@openssh.com,ssh-ed25519,sk-ssh-ed25519@openssh.com
+KexAlgorithms curve25519-sha256,sntrup761x25519-sha512@openssh.com
+Ciphers aes256-ctr
+MACs hmac-sha2-512-etm@openssh.com
+HostbasedAcceptedAlgorithms ssh-ed25519-cert-v01@openssh.com,sk-ssh-ed25519-cert-v01@openssh.com,ssh-ed25519,sk-ssh-ed25519@openssh.com
+"
+
     system "make", "install"
 
     # This was removed by upstream with very little announcement and has
