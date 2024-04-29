@@ -10,7 +10,7 @@
 @@ -12,27 +12,15 @@
      regex(/href=.*?openssh[._-]v?(\d+(?:\.\d+)+(?:p\d+)?)\.t/i)
    end
- 
+
 -  bottle do
 -    sha256 arm64_sonoma:   "447bfbf4b1c31720c1bad753cf207f234b52cb1fea5b0a474708a6251e82dff2"
 -    sha256 arm64_ventura:  "74ad631d8504351d31259ac7aae694a81097b04739f9a2f1e6a28e42ca60834b"
@@ -23,12 +23,12 @@
 -
    # Please don't resubmit the keychain patch option. It will never be accepted.
    # https://archive.is/hSB6d#10%25
- 
+
    depends_on "pkg-config" => :build
    depends_on "ldns"
    depends_on "libfido2"
 -  depends_on "openssl@3"
- 
+
    uses_from_macos "mandoc" => :build
    uses_from_macos "lsof" => :test
 -  uses_from_macos "krb5"
@@ -45,7 +45,7 @@
 +      --without-openssl
        --with-security-key-builtin
      ]
- 
+
 @@ -92,6 +79,99 @@
      system "./configure", *args
      system "make"
@@ -132,7 +132,7 @@
 +X11Forwarding no
 +X11UseLocalhost yes
 +PermitTTY yes
-+VersionAddendum Apollo/1.0
++VersionAddendum Magnetar/1.0
 +# Crypto
 +CASignatureAlgorithms sk-ssh-ed25519@openssh.com,ssh-ed25519
 +HostKeyAlgorithms ssh-ed25519-cert-v01@openssh.com,sk-ssh-ed25519-cert-v01@openssh.com,ssh-ed25519,sk-ssh-ed25519@openssh.com
@@ -144,5 +144,5 @@
 +"
 +
      system "make", "install"
- 
+
      # This was removed by upstream with very little announcement and has

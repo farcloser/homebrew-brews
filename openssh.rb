@@ -88,6 +88,12 @@ Host *
   ForwardAgent no
   Tunnel no
 
+  # Yubikey and macos integ
+  IgnoreUnknown UseKeychain
+  UseKeychain yes
+  AddKeysToAgent yes
+  IdentityFile ~/.ssh/id_ed25519_sk
+
   AddressFamily any
   BatchMode no
   CheckHostIP yes
@@ -106,8 +112,6 @@ Host *
   Port 22
   PubkeyAuthentication yes
   StrictHostKeyChecking ask
-  IdentityFile ~/.ssh/id_ed25519
-  IdentityFile ~/.ssh/id_ed25519_sk
   CASignatureAlgorithms sk-ssh-ed25519@openssh.com,ssh-ed25519
   HostKeyAlgorithms ssh-ed25519-cert-v01@openssh.com,sk-ssh-ed25519-cert-v01@openssh.com,ssh-ed25519,sk-ssh-ed25519@openssh.com
   PubkeyAcceptedAlgorithms ssh-ed25519-cert-v01@openssh.com,sk-ssh-ed25519-cert-v01@openssh.com,ssh-ed25519,sk-ssh-ed25519@openssh.com
@@ -161,7 +165,7 @@ UsePAM yes
 X11Forwarding no
 X11UseLocalhost yes
 PermitTTY yes
-VersionAddendum Apollo/1.0
+VersionAddendum Magnetar/1.0
 # Crypto
 CASignatureAlgorithms sk-ssh-ed25519@openssh.com,ssh-ed25519
 HostKeyAlgorithms ssh-ed25519-cert-v01@openssh.com,sk-ssh-ed25519-cert-v01@openssh.com,ssh-ed25519,sk-ssh-ed25519@openssh.com
