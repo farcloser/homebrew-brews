@@ -1,5 +1,5 @@
---- openssh.rb.orig	2024-11-13 19:57:21
-+++ openssh.rb	2024-11-13 20:00:22
+--- _tmp/openssh.rb	2024-11-13 20:56:30
++++ openssh.rb	2024-11-13 20:56:51
 @@ -1,5 +1,5 @@
  class Openssh < Formula
 -  desc "OpenBSD freely-licensed SSH connectivity tools"
@@ -150,3 +150,13 @@
      system "make", "install"
  
      # This was removed by upstream with very little announcement and has
+@@ -101,9 +185,6 @@
+ 
+     buildpath.install resource("com.openssh.sshd.sb")
+     (etc/"ssh").install "com.openssh.sshd.sb" => "org.openssh.sshd.sb"
+-
+-    # Don't hardcode Cellar paths in configuration files
+-    inreplace etc/"ssh/sshd_config", prefix, opt_prefix
+   end
+ 
+   test do

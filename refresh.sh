@@ -31,8 +31,9 @@ net::download(){
 
 mkdir -p _tmp
 
-net::download https://raw.githubusercontent.com/Homebrew/homebrew-core/master/Formula/o/openssh.rb "$root"/openssh.rb no_cache
-net::download https://raw.githubusercontent.com/Homebrew/homebrew-core/master/Formula/t/terminal-notifier.rb "$root"/terminal-notifier.rb no_cache
+net::download https://raw.githubusercontent.com/Homebrew/homebrew-core/master/Formula/o/openssh.rb "$root"/_tmp/openssh.rb no_cache
+net::download https://raw.githubusercontent.com/Homebrew/homebrew-core/master/Formula/t/terminal-notifier.rb "$root"/_tmp/terminal-notifier.rb no_cache
+cp "$root"/_tmp/* "$root"
 chmod a+r "$root"/*.rb
 
 # Note on bottles - homebrew creative vocabulary and corresponding documentation is really hard to make any sense out of.
