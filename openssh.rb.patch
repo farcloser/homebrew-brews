@@ -1,24 +1,24 @@
---- _tmp/openssh.rb	2024-04-29 11:56:23
-+++ openssh.rb	2024-04-29 11:57:16
+--- openssh.rb.orig	2024-11-13 19:57:21
++++ openssh.rb	2024-11-13 20:00:22
 @@ -1,5 +1,5 @@
  class Openssh < Formula
 -  desc "OpenBSD freely-licensed SSH connectivity tools"
 +  desc "Farcloser: OpenBSD freely-licensed SSH connectivity tools"
    homepage "https://www.openssh.com/"
-   url "https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-9.7p1.tar.gz"
-   mirror "https://cloudflare.cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-9.7p1.tar.gz"
+   url "https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-9.9p1.tar.gz"
+   mirror "https://cloudflare.cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-9.9p1.tar.gz"
 @@ -12,27 +12,15 @@
      regex(/href=.*?openssh[._-]v?(\d+(?:\.\d+)+(?:p\d+)?)\.t/i)
    end
  
 -  bottle do
--    sha256 arm64_sonoma:   "447bfbf4b1c31720c1bad753cf207f234b52cb1fea5b0a474708a6251e82dff2"
--    sha256 arm64_ventura:  "74ad631d8504351d31259ac7aae694a81097b04739f9a2f1e6a28e42ca60834b"
--    sha256 arm64_monterey: "ba7b58021803bdecef4c8ac9ed33e6f8c3788c47ee00548bbab4bb0a937c8ef9"
--    sha256 sonoma:         "87eedfb466961ad64757901871958b25eb15090aa3b261142bdf21250c6905d8"
--    sha256 ventura:        "379cdb985a280265a8451180838044c8fca07e02c2972ab9da846a602288082c"
--    sha256 monterey:       "119e9396d914c59f94eabab53fb66bdc5f0d180da000c77ee3deddb269fae94c"
--    sha256 x86_64_linux:   "df5724bab105958f71a2ff1d880785d14940bceb7e8da6a6655b55bc64c05ebb"
+-    rebuild 1
+-    sha256 arm64_sequoia: "d7941094cacc59b5c2ab1d64343751205ef31b7f9517b19bb2a128d6c3583226"
+-    sha256 arm64_sonoma:  "6305fa9baff789a76925f68d983a7b402f2db8b2652baab7775a97477975ff53"
+-    sha256 arm64_ventura: "f8245cffebafb4f31939f333eb903fcf7db285bcf6c0257e84644384602d827a"
+-    sha256 sonoma:        "ab855f72ee7b1443d30256c6098c7f8593a6779c7ae6e9e2e12f6082c7406920"
+-    sha256 ventura:       "6c763c4b4f845df7bb4ee967a85108835fc6382920b6461c3487546f4fab60a7"
+-    sha256 x86_64_linux:  "84eb498f82816692da68f55d9bbc02bf8d7fb575f40c7efa008b6e9ac0738079"
 -  end
 -
    # Please don't resubmit the keychain patch option. It will never be accepted.
