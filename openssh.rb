@@ -1,10 +1,10 @@
 class Openssh < Formula
   desc "Farcloser: OpenBSD freely-licensed SSH connectivity tools"
   homepage "https://www.openssh.com/"
-  url "https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-9.9p1.tar.gz"
-  mirror "https://cloudflare.cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-9.9p1.tar.gz"
-  version "9.9p1"
-  sha256 "b343fbcdbff87f15b1986e6e15d6d4fc9a7d36066be6b7fb507087ba8f966c02"
+  url "https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-9.9p2.tar.gz"
+  mirror "https://cloudflare.cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-9.9p2.tar.gz"
+  version "9.9p2"
+  sha256 "91aadb603e08cc285eddf965e1199d02585fa94d994d6cae5b41e1721e215673"
   license "SSH-OpenSSH"
 
   livecheck do
@@ -15,7 +15,7 @@ class Openssh < Formula
   # Please don't resubmit the keychain patch option. It will never be accepted.
   # https://archive.is/hSB6d#10%25
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "ldns"
   depends_on "libfido2"
 
@@ -65,7 +65,7 @@ class Openssh < Formula
       end
     end
 
-    args = *std_configure_args + %W[
+    args = %W[
       --sysconfdir=#{etc}/ssh
       --with-ldns
       --with-libedit
@@ -76,7 +76,7 @@ class Openssh < Formula
 
     args << "--with-privsep-path=#{var}/lib/sshd" if OS.linux?
 
-    system "./configure", *args
+    system "./configure", *args, *std_configure_args
     system "make"
     ENV.deparallelize
     rm "ssh_config"
@@ -197,7 +197,7 @@ HostbasedAcceptedAlgorithms ssh-ed25519-cert-v01@openssh.com,sk-ssh-ed25519-cert
     assert_match "OpenSSH_", shell_output("#{bin}/ssh -V 2>&1")
 
     port = free_port
-    fork { exec sbin/"sshd", "-D", "-p", port.to_s }
+    spawn sbin/"sshd", "-D", "-p", port.to_s
     sleep 2
     assert_match "sshd", shell_output("lsof -i :#{port}")
   end
