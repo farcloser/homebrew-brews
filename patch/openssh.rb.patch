@@ -1,55 +1,34 @@
---- _tmp/openssh.rb	2024-11-13 20:56:30
-+++ openssh.rb	2024-11-13 20:56:51
-@@ -1,5 +1,5 @@
+--- _tmp/openssh.rb
++++ openssh.rb
+@@ -1,3 +1,3 @@
  class Openssh < Formula
 -  desc "OpenBSD freely-licensed SSH connectivity tools"
 +  desc "Farcloser: OpenBSD freely-licensed SSH connectivity tools"
    homepage "https://www.openssh.com/"
-   url "https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-9.9p2.tar.gz"
-   mirror "https://cloudflare.cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-9.9p2.tar.gz"
-@@ -12,27 +12,15 @@
-     regex(/href=.*?openssh[._-]v?(\d+(?:\.\d+)+(?:p\d+)?)\.t/i)
-   end
-
--  bottle do
--    sha256 arm64_sequoia: "0f9bafc94fa471cbb2385c7d6c94555007562649922e994db8c0445a509f7309"
--    sha256 arm64_sonoma:  "3d29bd75979fa18a5ffedeb87e980935130badc1e66eb1b03fbe939395d69faa"
--    sha256 arm64_ventura: "f5ce25d2a671debd1114ce92ba6fc9ecefafce11d8e3fed5287fe29039cb547a"
--    sha256 sonoma:        "abfddd2952c084d370508dbc9f73d841b21a79086798e503f433973c0a96d8f2"
--    sha256 ventura:       "4b3a0a5eedf70dd18d80c2062d2fd3ac370e774b928d21c227dd09d0b18598de"
--    sha256 arm64_linux:   "3161bee35d5c534421e678ac88d5c9c5c4b9cc3027ef84de29158c21b4753853"
--    sha256 x86_64_linux:  "94e604bf4f8b0554621c22291d50063101c43bd4b99b48dbd0c7120a1f5178b5"
--  end
--
-   # Please don't resubmit the keychain patch option. It will never be accepted.
-   # https://archive.is/hSB6d#10%25
- 
-   depends_on "pkgconf" => :build
-   depends_on "ldns"
+@@ -21,3 +21,2 @@
    depends_on "libfido2"
 -  depends_on "openssl@3"
-
-   uses_from_macos "mandoc" => :build
+@@ -25,3 +24,2 @@
    uses_from_macos "lsof" => :test
 -  uses_from_macos "krb5"
    uses_from_macos "libedit"
-   uses_from_macos "libxcrypt"
-   uses_from_macos "zlib"
-@@ -81,9 +69,8 @@
-       --sysconfdir=#{etc}/ssh
-       --with-ldns
+@@ -46,5 +44,4 @@
        --with-libedit
 -      --with-kerberos5
        --with-pam
--      --with-ssl-dir=#{Formula["openssl@3"].opt_prefix}
+-      --with-ssl-dir=#{formula_opt_prefix("openssl@3")}
 +      --without-openssl
        --with-security-key-builtin
-     ]
-
-@@ -92,6 +79,103 @@
-     system "./configure", *args
-     system "make"
+@@ -57,2 +54,107 @@
      ENV.deparallelize
++
++    ed25519_algos = %w[
++      ssh-ed25519-cert-v01@openssh.com
++      sk-ssh-ed25519-cert-v01@openssh.com
++      ssh-ed25519
++      sk-ssh-ed25519@openssh.com
++    ].join(",")
++
 +    rm "ssh_config"
 +    touch "ssh_config"
 +    inreplace "ssh_config", "", "
@@ -84,12 +63,12 @@
 +  PubkeyAuthentication yes
 +  StrictHostKeyChecking ask
 +  CASignatureAlgorithms sk-ssh-ed25519@openssh.com,ssh-ed25519
-+  HostKeyAlgorithms ssh-ed25519-cert-v01@openssh.com,sk-ssh-ed25519-cert-v01@openssh.com,ssh-ed25519,sk-ssh-ed25519@openssh.com
-+  PubkeyAcceptedAlgorithms ssh-ed25519-cert-v01@openssh.com,sk-ssh-ed25519-cert-v01@openssh.com,ssh-ed25519,sk-ssh-ed25519@openssh.com
++  HostKeyAlgorithms #{ed25519_algos}
++  PubkeyAcceptedAlgorithms #{ed25519_algos}
 +  KexAlgorithms curve25519-sha256,sntrup761x25519-sha512@openssh.com
 +  Ciphers aes256-ctr
 +  MACs hmac-sha2-512-etm@openssh.com
-+  HostbasedAcceptedAlgorithms ssh-ed25519-cert-v01@openssh.com,sk-ssh-ed25519-cert-v01@openssh.com,ssh-ed25519,sk-ssh-ed25519@openssh.com
++  HostbasedAcceptedAlgorithms #{ed25519_algos}
 +"
 +
 +    rm "sshd_config"
@@ -139,24 +118,18 @@
 +VersionAddendum Magnetar/1.0
 +# Crypto
 +CASignatureAlgorithms sk-ssh-ed25519@openssh.com,ssh-ed25519
-+HostKeyAlgorithms ssh-ed25519-cert-v01@openssh.com,sk-ssh-ed25519-cert-v01@openssh.com,ssh-ed25519,sk-ssh-ed25519@openssh.com
-+PubkeyAcceptedAlgorithms ssh-ed25519-cert-v01@openssh.com,sk-ssh-ed25519-cert-v01@openssh.com,ssh-ed25519,sk-ssh-ed25519@openssh.com
++HostKeyAlgorithms #{ed25519_algos}
++PubkeyAcceptedAlgorithms #{ed25519_algos}
 +KexAlgorithms curve25519-sha256,sntrup761x25519-sha512@openssh.com
 +Ciphers aes256-ctr
 +MACs hmac-sha2-512-etm@openssh.com
-+HostbasedAcceptedAlgorithms ssh-ed25519-cert-v01@openssh.com,sk-ssh-ed25519-cert-v01@openssh.com,ssh-ed25519,sk-ssh-ed25519@openssh.com
++HostbasedAcceptedAlgorithms #{ed25519_algos}
 +"
 +
      system "make", "install"
-
-     # This was removed by upstream with very little announcement and has
-@@ -101,9 +185,6 @@
-
-     buildpath.install resource("com.openssh.sshd.sb")
+@@ -66,5 +168,2 @@
      (etc/"ssh").install "com.openssh.sshd.sb" => "org.openssh.sshd.sb"
 -
 -    # Don't hardcode Cellar paths in configuration files
 -    inreplace etc/"ssh/sshd_config", prefix, opt_prefix
    end
-
-   test do

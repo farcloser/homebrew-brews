@@ -42,6 +42,10 @@ chmod a+r "$root"/Formula/*.rb
 #
 # Seriously? Like - SERIOUSLY? ^^^
 
+# Strip the bottle block from openssh (we build from source, so it is useless), instead of carrying its removal in
+# the patch: upstream refreshes the hashes with every release, which would break the patch every time.
+perl -0777 -pi -e 's/  bottle do\n(?:    .*\n)+?  end\n\n//' "$root"/Formula/openssh.rb
+
 patch --directory "$root/Formula" < patch/openssh.rb.patch
 patch --directory "$root/Formula" < patch/terminal-notifier.rb.patch
 
