@@ -9,7 +9,6 @@ root="$(cd "$(dirname "${BASH_SOURCE[0]:-$PWD}")" 2>/dev/null 1>&2 && pwd)"
 readonly root
 
 . "$root"/lib/log.sh
-. "$root"/lib/utils.sh
 
 net::download(){
   local url="$1"
@@ -17,7 +16,7 @@ net::download(){
   local no_cache="${3:-}"
   local args=(--tlsv1.2 -sSfL --proto "=https" --http2-prior-knowledge)
   # shellcheck disable=SC2015
-  [ "$destination" != /dev/stdout ] && [ -e "$destination" ] && [ ! "$no_cache" ] && {
+  [ "$destination" != /dev/stdout ] && [ -e "$destination" ] && [ ! -n "$no_cache" ] && {
     log::info "%s is already there. Nothing to do.\n" "$destination"
   } || {
     printf >&2 "Downloading %s\n" "$url"
@@ -29,12 +28,12 @@ net::download(){
   }
 }
 
-mkdir -p _tmp
+mkdir -p tmp
 
-net::download https://raw.githubusercontent.com/Homebrew/homebrew-core/master/Formula/o/openssh.rb "$root"/_tmp/openssh.rb no_cache
-net::download https://raw.githubusercontent.com/Homebrew/homebrew-core/master/Formula/t/terminal-notifier.rb "$root"/_tmp/terminal-notifier.rb no_cache
-cp "$root"/_tmp/* "$root"
-chmod a+r "$root"/*.rb
+net::download https://raw.githubusercontent.com/Homebrew/homebrew-core/master/Formula/o/openssh.rb "$root"/tmp/openssh.rb no_cache
+net::download https://raw.githubusercontent.com/Homebrew/homebrew-core/master/Formula/t/terminal-notifier.rb "$root"/tmp/terminal-notifier.rb no_cache
+cp "$root"/tmp/* "$root/Formula"
+chmod a+r "$root"/Formula/*.rb
 
 # Note on bottles - homebrew creative vocabulary and corresponding documentation is really hard to make any sense out of.
 #
@@ -43,7 +42,7 @@ chmod a+r "$root"/*.rb
 #
 # Seriously? Like - SERIOUSLY? ^^^
 
-patch --directory "$root" < openssh.rb.patch
-patch --directory "$root" < terminal-notifier.rb.patch
+patch --directory "$root/Formula" < patch/openssh.rb.patch
+patch --directory "$root/Formula" < patch/terminal-notifier.rb.patch
 
-# diff --unified _tmp/openssh.rb openssh.rb > openssh.rb.patch
+# diff --unified tmp/openssh.rb openssh.rb > openssh.rb.patch
