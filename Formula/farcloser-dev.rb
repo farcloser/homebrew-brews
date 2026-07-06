@@ -5,7 +5,7 @@ class FarcloserDev < Formula
     branch: "main"
   version "dev"
 
-  depends_on "farcloser/brews/limen-boot"
+  depends_on "farcloser/brews/limen"
   depends_on "farcloser/brews/mumbrew"
   depends_on "farcloser/brews/ssh-agent"
   depends_on :macos

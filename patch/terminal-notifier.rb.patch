@@ -1,0 +1,7 @@
+--- tmp/terminal-notifier.rb
++++ terminal-notifier.rb
+@@ -1,3 +1,3 @@
+ class TerminalNotifier < Formula
+-  desc "Send macOS User Notifications from the command-line"
++  desc "Farcloser: Send macOS User Notifications from the command-line"
+   homepage "https://github.com/julienXX/terminal-notifier"
