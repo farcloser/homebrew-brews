@@ -24,7 +24,7 @@ Modified and pinned dependencies:
 
 ## References
 
-* https://raw.githubusercontent.com/Homebrew/brew/master/docs/Formula-Cookbook.md
+* https://docs.brew.sh/Formula-Cookbook
 
 ## Develop
 
