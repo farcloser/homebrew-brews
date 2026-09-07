@@ -10,21 +10,19 @@ readonly root
 
 . "$root"/lib/log.sh
 
-# Force clean leftovers
 brew untap farcloser/test >/dev/null 2>&1 || true
-# Install fake test tap
 brew tap-new farcloser/test --no-git >/dev/null 2>&1 || true
 log::info "Auditing formulas"
 ex=
-# XXX might be necessary to sed farcloser/brews -> farcloser/test so that dependency resolution works when new one
-# are introduced
+# Formulas depending on farcloser/brews/* resolve against the REAL tap, not this fake one — sed the prefix if that
+# breaks.
 cp -p ./Formula/*.rb "$(brew --repository)"/Library/Taps/farcloser/homebrew-test/Formula
 for file in "$(brew --repository)"/Library/Taps/farcloser/homebrew-test/Formula/*.rb; do
   name="$(basename "${file%.rb}")"
   log::info " > $name"
   brew audit --verbose --formula "farcloser/test/$name" || {
     log::error "Audit failed for file $file"
-    # This is ugly, but ignore issues on openssh formula, which right now are solely "line too long"
+    # openssh is upstream's formula; its audit noise (line length) is not ours.
     [ "$name" == "openssh" ] || ex=42
   }
 done

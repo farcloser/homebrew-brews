@@ -37,13 +37,6 @@ net::download https://raw.githubusercontent.com/Homebrew/homebrew-core/master/Fo
 cp "$root"/tmp/* "$root/Formula"
 chmod a+r "$root"/Formula/*.rb
 
-# Note on bottles - homebrew creative vocabulary and corresponding documentation is really hard to make any sense out of.
-#
-# "A value of :any or :any_skip_relocation means that the bottle can be safely installed in any Cellar as it did not
-# contain any references to the Cellar in which it was originally built"
-#
-# Seriously? Like - SERIOUSLY? ^^^
-
 # Strip the bottle block from openssh (we build from source, so it is useless), instead of carrying its removal in
 # the patch: upstream refreshes the hashes with every release, which would break the patch every time.
 perl -0777 -pi -e 's/  bottle do\n(?:    .*\n)+?  end\n\n//' "$root"/Formula/openssh.rb
@@ -51,4 +44,4 @@ perl -0777 -pi -e 's/  bottle do\n(?:    .*\n)+?  end\n\n//' "$root"/Formula/ope
 patch --directory "$root/Formula" < patch/openssh.rb.patch
 patch --directory "$root/Formula" < patch/terminal-notifier.rb.patch
 
-# diff --unified tmp/openssh.rb openssh.rb > openssh.rb.patch
+# Regenerate a patch: diff --unified tmp/<f>.rb Formula/<f>.rb > patch/<f>.rb.patch

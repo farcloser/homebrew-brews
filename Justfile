@@ -7,8 +7,7 @@ import '.limen/just/main.just'
 # tree under that name.
 export LINT_HOMEBREW_TAP := 'farcloser/brews'
 
-# The FIRST recipe defined here becomes `just`'s default (until then, the
-# shared default lists everything). The aggregates CI runs, for example:
+# The FIRST recipe defined here becomes `just`'s default.
 lint: do::lint::homebrew::default do::lint::default
 fix: do::fix::homebrew::default do::fix::default
 test:
