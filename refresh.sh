@@ -14,7 +14,9 @@ net::download(){
   local url="$1"
   local destination="${2:-/dev/stdout}"
   local no_cache="${3:-}"
-  local args=(--tlsv1.2 -sSfL --proto "=https" --http2-prior-knowledge)
+  # The transport floor every curl of ours carries, plus retries: a plain
+  # GET, safe to repeat, and the network is the usual reason it fails.
+  local args=(--proto '=https' --tlsv1.2 -fsSL --http2-prior-knowledge --retry 5 --retry-delay 3 --retry-all-errors)
   # shellcheck disable=SC2015
   [ "$destination" != /dev/stdout ] && [ -e "$destination" ] && [ ! -n "$no_cache" ] && {
     log::info "%s is already there. Nothing to do.\n" "$destination"
