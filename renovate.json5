@@ -29,6 +29,18 @@
       datasourceTemplate: "git-refs",
     },
   ],
+  // A digest update from git-refs has no release timestamp, and the 3-day
+  // cooldown above holds a timestamp-less update forever
+  // (minimumReleaseAgeBehaviour defaults to timestamp-required). Our own
+  // organizations' repositories are exempt from the cooldown, the same rule
+  // the limen preset carries: a commit we cut carries no risk we do not
+  // already own.
+  packageRules: [
+    {
+      matchDepNames: ["/^(github\\.com/)?(farcloser|forkcloser|mycophonic)/[^/]+$/"],
+      minimumReleaseAge: "0 days",
+    },
+  ],
   gitIgnoredAuthors: [
     "300983632+limen-ci-farcloser[bot]@users.noreply.github.com",
     "41898282+github-actions[bot]@users.noreply.github.com",
