@@ -1,8 +1,8 @@
 class TerminalNotifier < Formula
   desc "Farcloser: Send macOS User Notifications from the command-line"
   homepage "https://github.com/julienXX/terminal-notifier"
-  url "https://github.com/julienXX/terminal-notifier/archive/refs/tags/2.0.0.tar.gz"
-  sha256 "6f22a7626e4e68e88df2005a5f256f7d3b432dbf4c0f8a0c15c968d9e38bf84c"
+  url "https://github.com/julienXX/terminal-notifier/archive/refs/tags/3.1.0.tar.gz"
+  sha256 "7dac44a563f00c10d49aa2da4cde9d1fecdb12b36ed57fe7fdff789c3578421e"
   license "MIT"
   head "https://github.com/julienXX/terminal-notifier.git", branch: "master"
 
