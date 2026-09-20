@@ -23,7 +23,7 @@
     "packageRules: a digest update from git-refs carries no release timestamp, and minimumReleaseAge holds a timestamp-less update forever (minimumReleaseAgeBehaviour defaults to timestamp-required). The shared preset already exempts our own organizations; this restates it locally because the exemption is what makes the customManager above usable at all."
   ],
   "extends": [
-    "github>farcloser/limen#v0.4.0"
+    "github>farcloser/limen#v0.5.2"
   ],
   "forkProcessing": "enabled",
   "gitIgnoredAuthors": [
