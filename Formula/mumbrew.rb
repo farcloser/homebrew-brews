@@ -18,6 +18,10 @@ class Mumbrew < Formula
 
     # run_type :interval
     # interval 86400
+
+    # launchd starts the agent with /usr/bin:/bin:/usr/sbin:/sbin only;
+    # without Homebrew's bin, mumbrew finds neither brew nor terminal-notifier.
+    environment_variables PATH: std_service_path_env
     working_dir HOMEBREW_PREFIX
 
     log_path var/"log/farcloser.mumbrew.err.log"
