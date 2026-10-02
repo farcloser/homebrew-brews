@@ -24,8 +24,8 @@ class Mumbrew < Formula
     environment_variables PATH: std_service_path_env
     working_dir HOMEBREW_PREFIX
 
-    log_path var/"log/farcloser.mumbrew.err.log"
-    error_log_path var/"log/farcloser.mumbrew.out.log"
+    log_path var/"log/farcloser.mumbrew.out.log"
+    error_log_path var/"log/farcloser.mumbrew.err.log"
   end
 
   test do
