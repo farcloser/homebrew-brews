@@ -37,9 +37,9 @@ net::download https://raw.githubusercontent.com/Homebrew/homebrew-core/master/Fo
 cp "$root"/tmp/* "$root/Formula"
 chmod a+r "$root"/Formula/*.rb
 
-# Strip the bottle block from openssh (we build from source, so it is useless), instead of carrying its removal in
-# the patch: upstream refreshes the hashes with every release, which would break the patch every time.
-perl -0777 -pi -e 's/  bottle do\n(?:    .*\n)+?  end\n\n//' "$root"/Formula/openssh.rb
+# Strip the bottle blocks (we build from source, so they are useless), instead of carrying their removal in the
+# patches: upstream refreshes the hashes with every release, which would break the patches every time.
+perl -0777 -pi -e 's/  bottle do\n(?:    .*\n)+?  end\n\n//' "$root"/Formula/openssh.rb "$root"/Formula/terminal-notifier.rb
 
 patch --directory "$root/Formula" < patch/openssh.rb.patch
 patch --directory "$root/Formula" < patch/terminal-notifier.rb.patch
