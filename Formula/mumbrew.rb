@@ -29,6 +29,6 @@ class Mumbrew < Formula
   end
 
   test do
-    system "./test.sh"
+    system "/bin/bash", "-n", bin/"mumbrew"
   end
 end
