@@ -30,18 +30,20 @@ net::download(){
   }
 }
 
-mkdir -p tmp
+# The pristine upstream formulas, kept between runs: the patches are regenerated against them (see the end).
+upstream="$root"/build/upstream
+mkdir -p "$upstream"
 
-net::download https://raw.githubusercontent.com/Homebrew/homebrew-core/master/Formula/o/openssh.rb "$root"/tmp/openssh.rb no_cache
-net::download https://raw.githubusercontent.com/Homebrew/homebrew-core/master/Formula/t/terminal-notifier.rb "$root"/tmp/terminal-notifier.rb no_cache
-cp "$root"/tmp/* "$root/Formula"
+net::download https://raw.githubusercontent.com/Homebrew/homebrew-core/master/Formula/o/openssh.rb "$upstream"/openssh.rb no_cache
+net::download https://raw.githubusercontent.com/Homebrew/homebrew-core/master/Formula/t/terminal-notifier.rb "$upstream"/terminal-notifier.rb no_cache
+cp "$upstream"/* "$root/Formula"
 chmod a+r "$root"/Formula/*.rb
 
 # Strip the bottle blocks (we build from source, so they are useless), instead of carrying their removal in the
 # patches: upstream refreshes the hashes with every release, which would break the patches every time.
 perl -0777 -pi -e 's/  bottle do\n(?:    .*\n)+?  end\n\n//' "$root"/Formula/openssh.rb "$root"/Formula/terminal-notifier.rb
 
-patch --directory "$root/Formula" < patch/openssh.rb.patch
-patch --directory "$root/Formula" < patch/terminal-notifier.rb.patch
+patch --directory "$root/Formula" < "$root"/patch/openssh.rb.patch
+patch --directory "$root/Formula" < "$root"/patch/terminal-notifier.rb.patch
 
-# Regenerate a patch: diff --unified tmp/<f>.rb Formula/<f>.rb > patch/<f>.rb.patch
+# Regenerate a patch: diff --unified build/upstream/<f>.rb Formula/<f>.rb > patch/<f>.rb.patch
