@@ -24,11 +24,13 @@ Modified and pinned dependencies:
 
 ## Releasing
 
-A tap is consumed at `HEAD`: merging to `main` is the release, and every
-formula but one tracks its upstream at `branch: "main"`. The one versioning
-act is the `revision` pin in `Formula/limen.rb`, which names a commit of
-[limen-install](https://github.com/farcloser/limen-install); it is bumped by
-hand.
+A tap is consumed at `HEAD`: merging to `main` is the release of the tap.
+Homegrown formulae build from their upstream's releases: `Formula/mumbrew.rb`
+and `Formula/ssh-agent.rb` pin a `tag` and the `revision` it names, and
+Renovate moves both to the next tag. `Formula/limen.rb` pins a bare `revision`
+of [limen-install](https://github.com/farcloser/limen-install) until that
+repository has releases; Renovate moves it to the head of `main`.
+`Formula/farcloser-dev.rb` builds from this tap's own `main`.
 
 ## References
 
