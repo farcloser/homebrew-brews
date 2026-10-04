@@ -8,6 +8,7 @@
 @@ -21,3 +21,2 @@
    depends_on "libfido2"
 -  depends_on "openssl@3"
+ 
 @@ -25,3 +24,2 @@
    uses_from_macos "lsof" => :test
 -  uses_from_macos "krb5"
