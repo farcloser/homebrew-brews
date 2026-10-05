@@ -9,8 +9,8 @@ class Limen < Formula
   desc "Install limen scaffolder"
   homepage "https://github.com/farcloser/limen-install"
   url "https://github.com/farcloser/limen-install.git",
-    revision: "b2e4369a58aad6349f442381e9f556d4cb436b88"
-  version "dev"
+    tag:      "v0.7.3",
+    revision: "13be95b5211c1374dfbab360c849cccc5ea53ce1"
   license "MIT"
 
   def install
