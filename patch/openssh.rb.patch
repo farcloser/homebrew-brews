@@ -13,14 +13,14 @@
    uses_from_macos "lsof" => :test
 -  uses_from_macos "krb5"
    uses_from_macos "libedit"
-@@ -46,5 +44,4 @@
+@@ -60,5 +58,4 @@
        --with-libedit
 -      --with-kerberos5
        --with-pam
 -      --with-ssl-dir=#{formula_opt_prefix("openssl@3")}
 +      --without-openssl
        --with-security-key-builtin
-@@ -57,2 +54,107 @@
+@@ -71,2 +68,107 @@
      ENV.deparallelize
 +
 +    ed25519_algos = %w[
@@ -128,7 +128,7 @@
 +"
 +
      system "make", "install"
-@@ -66,5 +168,2 @@
+@@ -80,5 +182,2 @@
      (etc/"ssh").install "com.openssh.sshd.sb" => "org.openssh.sshd.sb"
 -
 -    # Don't hardcode Cellar paths in configuration files
