@@ -30,12 +30,23 @@ net::download(){
   }
 }
 
+# The homebrew-core commit the forked formulas come from. Pinned, so a run
+# reproduces the committed Formula/ files; moving it is how upstream's changes
+# are taken. A full commit as the first argument overrides it, to try a newer
+# one before pinning it here.
+core_commit="${1:-50c10de777a7762f8b3cb5d4b0f6adbb400de949}"
+readonly core_commit
+printf '%s' "$core_commit" | grep -qE '^[0-9a-f]{40}$' || {
+  log::error "Not a full homebrew-core commit: $core_commit"
+  exit 1
+}
+
 # The pristine upstream formulas, kept between runs: the patches are regenerated against them (see the end).
 upstream="$root"/build/upstream
 mkdir -p "$upstream"
 
-net::download https://raw.githubusercontent.com/Homebrew/homebrew-core/master/Formula/o/openssh.rb "$upstream"/openssh.rb no_cache
-net::download https://raw.githubusercontent.com/Homebrew/homebrew-core/master/Formula/t/terminal-notifier.rb "$upstream"/terminal-notifier.rb no_cache
+net::download https://raw.githubusercontent.com/Homebrew/homebrew-core/"$core_commit"/Formula/o/openssh.rb "$upstream"/openssh.rb no_cache
+net::download https://raw.githubusercontent.com/Homebrew/homebrew-core/"$core_commit"/Formula/t/terminal-notifier.rb "$upstream"/terminal-notifier.rb no_cache
 cp "$upstream"/* "$root/Formula"
 chmod a+r "$root"/Formula/*.rb
 
