@@ -11,3 +11,6 @@ export LINT_HOMEBREW_TAP := 'farcloser/brews'
 lint: do::lint::homebrew::default do::lint::default
 fix: do::fix::homebrew::default do::fix::default
 test:
+
+# --- added by limen fix: the recipe the security workflow runs ---
+security: do::security::default
