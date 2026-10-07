@@ -34,7 +34,7 @@ net::download(){
 # reproduces the committed Formula/ files; moving it is how upstream's changes
 # are taken. A full commit as the first argument overrides it, to try a newer
 # one before pinning it here.
-core_commit="${1:-50c10de777a7762f8b3cb5d4b0f6adbb400de949}"
+core_commit="${1:-ad0d23a1df58ab34e44847864fc8e041c33e8f2b}"
 readonly core_commit
 printf '%s' "$core_commit" | grep -qE '^[0-9a-f]{40}$' || {
   log::error "Not a full homebrew-core commit: $core_commit"
