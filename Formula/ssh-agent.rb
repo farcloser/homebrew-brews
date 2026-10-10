@@ -2,8 +2,8 @@ class SshAgent < Formula
   desc "Farcloser: Launchctl agent for ssh-agent"
   homepage "https://github.com/farcloser/ssh-agent"
   url "https://github.com/farcloser/ssh-agent.git",
-      tag:      "v1.0.0",
-      revision: "7bd1553a706afb12f5190004e0f9fcba6ca1ff3d"
+      tag:      "v1.0.1",
+      revision: "1bae816e693e987ae1c2c2bf79563f96cdfae35a"
 
   depends_on "farcloser/brews/openssh"
 
