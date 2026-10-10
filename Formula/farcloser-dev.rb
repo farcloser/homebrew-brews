@@ -4,8 +4,10 @@ class FarcloserDev < Formula
   url "https://github.com/farcloser/homebrew-brews.git",
     branch: "main"
   version "dev"
+  # Bumped when the dependency list changes: the version never does, so this
+  # is what makes an installed farcloser-dev show as outdated.
+  revision 1
 
-  depends_on "farcloser/brews/limen"
   depends_on "farcloser/brews/mumbrew"
   depends_on "farcloser/brews/ssh-agent"
   depends_on :macos
