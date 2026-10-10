@@ -1,9 +1,12 @@
 # limen.rb — Homebrew formula.
 # Ships ONLY the bootstrap script (the global aqua config is embedded in it).
-# `brew upgrade` re-runs the bootstrap, propagating the new scaffolder version.
+# The bootstrap itself is a shell step, after the install and after every
+# upgrade: Homebrew runs post_install inside its sandbox, which allows writes
+# to the Cellar and the formula's log only, and limen-install writes the
+# global aqua config under ~/.config and the shell rc.
 #
-# Install:  brew install farcloser/brews/limen
-# Update:   brew upgrade limen
+# Install:  brew install farcloser/brews/limen && limen-install
+# Update:   brew upgrade limen && limen-install
 
 class Limen < Formula
   desc "Install limen scaffolder"
@@ -17,20 +20,13 @@ class Limen < Formula
     bin.install "limen-install" => "limen-install"
   end
 
-  def post_install
-    # idempotent: writes the embedded config + installs/updates the scaffolder.
-    # Non-fatal so a flaky network can't brick the upgrade — but rescue ONLY
-    # the command failure (Homebrew's system raises BuildError), and say so:
-    # a modifier `rescue nil` would swallow real defects too, silently.
-    system bin/"limen-install"
-  rescue BuildError
-    opoo "limen-install failed (flaky network?)"
-  end
-
   def caveats
     <<~EOS
-      The scaffolder installs/updates automatically on `brew upgrade`.
-      Manual: limen-install
+      Run the bootstrap once now, and again after every `brew upgrade limen`:
+        limen-install
+      It installs aqua, pins the matching limen in the global aqua config and
+      installs it. Homebrew cannot run it for you: post_install is sandboxed
+      away from your home directory, which is where the bootstrap writes.
     EOS
   end
 
