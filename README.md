@@ -8,12 +8,6 @@ brew install farcloser/brews/XXXX
 
 ## List of brews
 
-### Provisioning
-
-* [farcloser_dev](https://github.com/farcloser/homebrew-brews): top-level brew for all developers laptops
-
-### Individual brews
-
 Homegrown:
 * [mumbrew](https://github.com/farcloser/mumbrew)
 
