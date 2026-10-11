@@ -16,7 +16,6 @@ brew install farcloser/brews/XXXX
 
 Homegrown:
 * [mumbrew](https://github.com/farcloser/mumbrew)
-* [ssh-agent](https://github.com/farcloser/ssh-agent)
 
 Modified and pinned dependencies:
 * [openssh](https://github.com/farcloser/homebrew-brews)
@@ -25,9 +24,8 @@ Modified and pinned dependencies:
 ## Releasing
 
 A tap is consumed at `HEAD`: merging to `main` is the release of the tap.
-Homegrown formulae build from their upstream's releases: `Formula/mumbrew.rb` and
-`Formula/ssh-agent.rb` pin a `tag` and the `revision` it names, and Renovate moves
-both to the next tag.
+A homegrown formula builds from its upstream's release: `Formula/mumbrew.rb` pins a
+`tag` and the `revision` it names, and Renovate moves both to the next tag.
 
 ## References
 
