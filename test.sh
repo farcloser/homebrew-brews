@@ -22,8 +22,7 @@ for file in "$(brew --repository)"/Library/Taps/farcloser/homebrew-test/Formula/
   log::info " > $name"
   brew audit --verbose --formula "farcloser/test/$name" || {
     log::error "Audit failed for file $file"
-    # openssh is upstream's formula; its audit noise (line length) is not ours.
-    [ "$name" == "openssh" ] || ex=42
+    ex=42
   }
 done
 brew untap farcloser/test >/dev/null 2>&1 || true

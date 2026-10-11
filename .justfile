@@ -11,9 +11,9 @@ export LINT_HOMEBREW_TAP := 'farcloser/brews'
 lint: do::lint::homebrew::default do::lint::default
 fix: do::fix::homebrew::default do::fix::default
 
-# Install the tap's openssh from this checkout and exercise it
+# Install the tap's formulas from this checkout and exercise them
 # (test-install.sh). CI's macOS legs only: on a laptop the install would
-# replace the user's own openssh.
+# replace the user's own mumbrew and terminal-notifier.
 test:
     #!/usr/bin/env bash
     set -euo pipefail
