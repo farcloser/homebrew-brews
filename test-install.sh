@@ -5,8 +5,9 @@ set -o errexit -o errtrace -o functrace -o nounset -o pipefail
 # Distributed under the terms of the MIT license
 # ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★
 
-# Installs openssh from this checkout, built from source (the tap ships no
-# bottles), and runs its own test. It replaces whatever openssh Homebrew has,
+# Installs mumbrew from this checkout, which builds terminal-notifier from
+# source (the tap ships no bottles), runs both formulas' own tests, and starts
+# and stops mumbrew's service. It replaces whatever the machine has of them,
 # so the test recipe runs it in CI only.
 
 root="$(cd "$(dirname "${BASH_SOURCE[0]:-$PWD}")" 2>/dev/null 1>&2 && pwd)"
@@ -34,7 +35,16 @@ fi
 # Homebrew refuses formulas from a tap it has not been told to trust.
 brew trust farcloser/brews
 
-log::info "Installing openssh, built from source"
-brew install farcloser/brews/openssh
-brew test farcloser/brews/openssh
+log::info "Installing mumbrew, building terminal-notifier from source"
+brew install farcloser/brews/mumbrew
+brew test farcloser/brews/terminal-notifier
+brew test farcloser/brews/mumbrew
+
+log::info "Loading mumbrew's service"
+brew services start farcloser/brews/mumbrew
+brew services list | grep -E '^mumbrew\s' || {
+  log::error "mumbrew's service is not listed after start"
+  exit 1
+}
+brew services stop farcloser/brews/mumbrew
 log::info "Install test successful"
