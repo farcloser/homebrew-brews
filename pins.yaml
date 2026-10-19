@@ -1,0 +1,13 @@
+# The Homebrew the style lanes (`lint homebrew style`, `fix homebrew style`)
+# run: a copy in .build/, never the user's own prefix. hack/brew reads this
+# entry back with `limen pins get` and unpacks the archive (book/tooling.md,
+# "Pinned artifacts beyond aqua").
+pins:
+  - name: homebrew
+    renovate: github-releases Homebrew/brew
+    version: 7.0.10
+    url: https://github.com/Homebrew/brew/archive/refs/tags/${version}.tar.gz
+    verify: download
+    digest:
+      version: 7.0.10
+      sha256: 66883a803c0aaf0dc3621e4c294c208ef2fd18192961bf35b2b7a1eb5fd3d187
