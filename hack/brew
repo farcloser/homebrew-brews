@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+# The brew the homebrew style lanes run: the Homebrew pins.yaml pins, unpacked
+# into .build/homebrew on first use and run with every path it writes inside
+# it, so the user's own prefix is never touched. Usage: hack/brew <brew args>
+# It needs the hermetic PATH a `just` recipe runs on, for limen.
+set -euo pipefail
+
+root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+home="${root}/.build/homebrew"
+
+version="$(cd "${root}" && limen pins get homebrew version)"
+prefix="${home}/brew-${version}"
+
+if [ ! -x "${prefix}/bin/brew" ]; then
+	url="$(cd "${root}" && limen pins get homebrew url)"
+	sum="$(cd "${root}" && limen pins get homebrew sha256)"
+	archive="${home}/brew-${version}.tar.gz"
+
+	mkdir -p "${home}"
+	if [ ! -f "${archive}" ]; then
+		curl --proto '=https' --tlsv1.2 -fsSL --retry 5 --retry-delay 3 -o "${archive}.part" "${url}"
+		mv "${archive}.part" "${archive}"
+	fi
+	# A bad archive is removed, or every later run would skip the download and
+	# fail on the same file.
+	echo "${sum}  ${archive}" | sha256sum -c - >/dev/null || {
+		rm -f "${archive}"
+		exit 1
+	}
+
+	# .vscode/ holds editor settings brew never reads, and a sandboxed agent
+	# may not create it.
+	tar -xzf "${archive}" -C "${home}" --exclude '*/.vscode'
+fi
+
+# The temporary directory must exist before the first run: the native gems
+# brew installs for style compile through it, and a failed build leaves a
+# broken gem behind that every later run trips on.
+mkdir -p "${home}/cache" "${home}/tmp" "${home}/logs"
+
+# Homebrew refuses a prefix under its temporary directory, which is why the
+# prefix is .build/ and never $TMPDIR. HOMEBREW_DEVELOPER is set because the
+# developer commands (style, audit) would otherwise turn developer mode on and
+# write that setting into the user's own Homebrew configuration. A cold cache
+# still fetches the formulae.brew.sh API data once; style needs none of it, so a
+# 403 there (a sandbox that refuses the host) is harmless.
+export HOMEBREW_PREFIX="${prefix}"
+export HOMEBREW_REPOSITORY="${prefix}"
+export HOMEBREW_CACHE="${home}/cache"
+export HOMEBREW_TEMP="${home}/tmp"
+export HOMEBREW_LOGS="${home}/logs"
+export HOMEBREW_DEVELOPER=1
+export HOMEBREW_NO_AUTO_UPDATE=1
+export HOMEBREW_NO_ANALYTICS=1
+export HOMEBREW_NO_ENV_HINTS=1
+
+exec "${prefix}/bin/brew" "$@"
