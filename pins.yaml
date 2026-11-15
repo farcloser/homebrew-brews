@@ -2,6 +2,11 @@
 # run: a copy in .build/, never the user's own prefix. hack/brew reads this
 # entry back with `limen pins get` and unpacks the archive (book/tooling.md,
 # "Pinned artifacts beyond aqua").
+#
+# Its method is the download itself. Homebrew signs nothing over its source:
+# the release carries one asset, Homebrew.pkg, and that file is the one
+# subject of the release's attestations; the tag's archive has no signature,
+# checksum or attestation, and `gh release verify-asset` refuses it.
 pins:
   - name: homebrew
     renovate: github-releases Homebrew/brew

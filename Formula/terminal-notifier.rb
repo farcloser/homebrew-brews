@@ -1,6 +1,8 @@
 class TerminalNotifier < Formula
   desc "Farcloser: Send macOS User Notifications from the command-line"
   homepage "https://github.com/julienXX/terminal-notifier"
+  # Upstream signs neither the tag nor its commit, and attests nothing: the
+  # sha256 below is the whole check on the archive.
   url "https://github.com/julienXX/terminal-notifier/archive/refs/tags/3.1.0.tar.gz"
   sha256 "7dac44a563f00c10d49aa2da4cde9d1fecdb12b36ed57fe7fdff789c3578421e"
   license "MIT"
