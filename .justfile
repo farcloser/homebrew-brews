@@ -7,11 +7,12 @@ import '.limen/just/main.just'
 # tree under that name.
 export LINT_HOMEBREW_TAP := 'farcloser/brews'
 
-# The homebrew style lanes (lint and fix) run the Homebrew pins.yaml pins, from
-# .build/, through hack/brew, which points every path brew writes inside
-# .build/. Audit and the test recipe keep BREW_BIN, the machine's brew: the test
-# installs the formulas.
+# The homebrew lanes (style, in lint and fix, and audit) run the Homebrew
+# pins.yaml pins, from .build/, through hack/brew, which points every path brew
+# writes inside .build/. Only the test recipe keeps BREW_BIN, the machine's
+# brew: it installs the formulas.
 export BREW_STYLE_BIN := justfile_directory() / 'hack' / 'brew'
+export BREW_AUDIT_BIN := justfile_directory() / 'hack' / 'brew'
 
 # The FIRST recipe defined here becomes `just`'s default.
 lint: do::lint::homebrew::default do::lint::default

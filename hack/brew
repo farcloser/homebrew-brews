@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# The brew the homebrew style lanes run: the Homebrew pins.yaml pins, unpacked
-# into .build/homebrew on first use and run with every path it writes inside
-# it, so the user's own prefix is never touched. Usage: hack/brew <brew args>
+# The brew the homebrew style and audit lanes run: the Homebrew pins.yaml pins,
+# unpacked into .build/homebrew on first use and run with every path it writes
+# inside it, so the user's own prefix is never touched. Usage: hack/brew <brew args>
 # It needs the hermetic PATH a `just` recipe runs on, for limen.
 set -euo pipefail
 
@@ -42,8 +42,9 @@ mkdir -p "${home}/cache" "${home}/tmp" "${home}/logs" "${home}/home"
 # prefix is .build/ and never $TMPDIR. HOMEBREW_DEVELOPER is set because the
 # developer commands (style, audit) would otherwise turn developer mode on and
 # write that setting into the user's own Homebrew configuration. A cold cache
-# still fetches the formulae.brew.sh API data once; style needs none of it, so a
-# 403 there (a sandbox that refuses the host) is harmless.
+# still fetches the formulae.brew.sh API data once. Style needs none of it, so a
+# 403 there (a sandbox that refuses the host) is harmless to it; audit runs with
+# the host refused once the cache holds the data.
 #
 # HOME is a directory of its own: brew hands HOME to the git it runs, which
 # reads the user's ~/.gitconfig, and brew itself reads ~/.homebrew. This brew
