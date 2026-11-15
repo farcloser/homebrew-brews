@@ -36,7 +36,7 @@ fi
 # The temporary directory must exist before the first run: the native gems
 # brew installs for style compile through it, and a failed build leaves a
 # broken gem behind that every later run trips on.
-mkdir -p "${home}/cache" "${home}/tmp" "${home}/logs"
+mkdir -p "${home}/cache" "${home}/tmp" "${home}/logs" "${home}/home"
 
 # Homebrew refuses a prefix under its temporary directory, which is why the
 # prefix is .build/ and never $TMPDIR. HOMEBREW_DEVELOPER is set because the
@@ -44,6 +44,12 @@ mkdir -p "${home}/cache" "${home}/tmp" "${home}/logs"
 # write that setting into the user's own Homebrew configuration. A cold cache
 # still fetches the formulae.brew.sh API data once; style needs none of it, so a
 # 403 there (a sandbox that refuses the host) is harmless.
+#
+# HOME is a directory of its own: brew hands HOME to the git it runs, which
+# reads the user's ~/.gitconfig, and brew itself reads ~/.homebrew. This brew
+# takes nothing from the user's home, and runs where that home cannot be read
+# (a sandboxed agent), where brew otherwise finds no working git and stops.
+export HOME="${home}/home"
 export HOMEBREW_PREFIX="${prefix}"
 export HOMEBREW_REPOSITORY="${prefix}"
 export HOMEBREW_CACHE="${home}/cache"
