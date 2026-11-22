@@ -10,10 +10,10 @@
 pins:
   - name: homebrew
     renovate: github-releases Homebrew/brew
-    version: 7.0.14
+    version: 7.0.15
     url: https://github.com/Homebrew/brew/archive/refs/tags/${version}.tar.gz
     verify: download
     digest:
-      version: 7.0.14
-      source: 7aeb0c5c34b07b2daa5524e258cd4c649306efc5eb30e23f3418f3436b00adf0
-      sha256: 44cc6eae380227f149b43902b202965ab459f37a9d69406e4fd8b6942943429f
+      version: 7.0.15
+      source: f8c9b1d744174e164d562632de693279098f46d847e7a96888c092640d54fb70
+      sha256: 6191f34dc4d99b86043112bf304b6a012da193d302d4b62a48eafdbb738121e3
