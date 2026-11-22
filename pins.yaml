@@ -10,7 +10,7 @@
 pins:
   - name: homebrew
     renovate: github-releases Homebrew/brew
-    version: 7.0.14
+    version: 7.0.15
     url: https://github.com/Homebrew/brew/archive/refs/tags/${version}.tar.gz
     verify: download
     digest:
