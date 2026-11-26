@@ -14,6 +14,6 @@ pins:
     url: https://github.com/Homebrew/brew/archive/refs/tags/${version}.tar.gz
     verify: download
     digest:
-      version: 7.0.15
-      source: f8c9b1d744174e164d562632de693279098f46d847e7a96888c092640d54fb70
-      sha256: 6191f34dc4d99b86043112bf304b6a012da193d302d4b62a48eafdbb738121e3
+      version: 7.0.16
+      source: dd8d0867c4c2a1867148386c2794b4e9e68c286681fa3b3dfb22dec33aa6fa31
+      sha256: 4baa1389eed8bd3cc2d47fd2378bd18693fb8f51e7987a1407f161696212fbea
